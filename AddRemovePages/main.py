@@ -1,5 +1,9 @@
 import PyPDF2
 
+input_pdf = ""
+output_pdf = ""
+
+
 def insert_page(input_pdf, output_pdf, page_to_insert, insert_index):
     with open(input_pdf, 'rb') as file:
         pdf_reader = PyPDF2.PdfFileReader(file)
