@@ -1,28 +1,26 @@
 import PyPDF2
 
+import fitz  # PyMuPDF
+
+def insert_page(input_path, output_path, new_page_path, insert_index):
+    # Open the input PDF file
+    pdf_document = fitz.open(input_path)
+
+    # Open the new page PDF file
+    new_page_document = fitz.open(new_page_path)
+
+    # Insert the new page at the specified index
+    pdf_document.insertPDF(new_page_document, from_page=0, to_page=0, to_index=insert_index)
+
+    # Save the modified PDF to the output file
+    pdf_document.save(output_path)
+
+    # Close the PDF documents
+    pdf_document.close()
+    new_page_document.close()
 
 
-def insert_page(input_pdf, output_pdf, page_to_insert, insert_index):
-    with open(input_pdf, 'rb') as file:
-        pdf_reader = PyPDF2.PdfFileReader(file)
-        pdf_writer = PyPDF2.PdfFileWriter()
 
-        # Add pages before the insertion point
-        for i in range(min(insert_index, pdf_reader.numPages)):
-            pdf_writer.addPage(pdf_reader.getPage(i))
-
-        # Add the new page
-        with open(page_to_insert, 'rb') as page_file:
-            page = PyPDF2.PdfFileReader(page_file).getPage(0)
-            pdf_writer.addPage(page)
-
-        # Add the remaining pages after the insertion point
-        for i in range(insert_index, pdf_reader.numPages):
-            pdf_writer.addPage(pdf_reader.getPage(i))
-
-        # Write the result to the output file
-        with open(output_pdf, 'wb') as output_file:
-            pdf_writer.write(output_file)
 
 def remove_page(input_path, output_path, page_number):
     # Open the input PDF file
@@ -56,8 +54,10 @@ output_pdf_removed = "/Users/anand/Developer/Python/PythonPDFTools/AddRemovePage
 new_page = "AddRemovePages/new_page.pdf"
 
 # Replace 'input.pdf' and 'output.pdf' with your actual file names
-# insert_page(input_pdf, output_pdf, new_page, insert_index=2)
+insert_index = 2  # Replace with the index where you want to insert the new page
+
+insert_page(input_pdf, output_pdf_inserted, new_page, insert_index)
 
 # Replace 'input.pdf' and 'output.pdf' with your actual file names
-remove_page(input_pdf, output_pdf_removed,3)
+# remove_page(input_pdf, output_pdf_removed,3)
 
